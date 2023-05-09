@@ -13,6 +13,7 @@ router.get('/',async(req,res)=>{
   
   router.post("/",async (req, res) => {
     var user=req.session.user;
+    console.log(user);
     const cart = await Cart.findOne({userId:user});
      const obj = cart.items;
     const checkout =  await Checkout.create({
@@ -34,9 +35,15 @@ router.get('/',async(req,res)=>{
   });
       
  // console.log(checkout);
-res.redirect('/checkout');
-
-
+res.redirect('/pay');
+});
+router.post("/s",async (req, res) => {
+  var title=req.body.title;
+    console.log(title);
+    var Subtotal=req.body.Subtotal;
+    console.log(Subtotal);
+    var total=req.body.total;
+    console.log(total);
 });
   module.exports = router;
 

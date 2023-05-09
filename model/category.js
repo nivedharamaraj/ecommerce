@@ -6,13 +6,13 @@ mongoose.plugin(slug);
 
 const categorySchema = Schema({
   title: {
-    type: String,
-    required: true,
+    type:String,
+    required:true,
   },
   slug: {
-    type: String,
-    unique: true,
-    slug: "title",
+    type:String,
+    unique:true,
+    slug:"title",
   },
 });
 

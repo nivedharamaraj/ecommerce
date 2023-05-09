@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const productSchema = Schema({
 
  id: {
-    type: String,
+    type:String,
     
   },
   title: {
-    type: String,
+    type:String,
     required: true,
   },
   slug:{
@@ -16,29 +16,29 @@ const productSchema = Schema({
     
 },
   image: {
-    type: String,
+    type:String,
     required: true,
   },
   description: {
-    type: String,
+    type:String,
     
   },
   price: {
-    type: Number,
+    type:Number,
     required: true,
   },
   category: {
-    type: String,
+    type:String,
    
   },
  
   qty: {
-    type: Number,
+    type:Number,
    
   },
   createdAt: {
-    type: Date,
-    default: Date.now,
+    type:Date,
+    default:Date.now,
   },
 });
 

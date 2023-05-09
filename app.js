@@ -2,26 +2,24 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const ejs   = require("ejs");
+var flash=require('connect-flash');
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 var session =require('express-session');
 var MongoStore = require("connect-mongo");
 var passport=require('passport');
-
+const paypal = require('paypal-rest-sdk');
 
 const connectDB = require("./config/db");
 
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'ARnYlL91ZKPxxOiAYDtVi6n-IY2_RtEVPrW4dip1UoDdPYtLx5YRuX7IHinvzd-nk9-S6Uz5rc5MU8Gi',
+  'client_secret': 'EEKXYSdQk5doTS9t6V3jNR8Tc2RNF768aY2KlpQWFTiifDDVch0JVphpKp2sRt-T1wZ_RJ9zrvm0EYH8'
+});
 
 const app  = express();
-// mongoose.connect('mongodb://127.0.0.1:27017/New-Ecommerce', {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }).then((result) => {
-//     console.log('Connection Established')
-// }).catch((err) => {
-//     console.log(err)
-// });
 
 app.use(express.static(path.join(__dirname, 'views')));
 app.set("views", path.join(__dirname, "views"));
@@ -44,12 +42,13 @@ app.use(
       cookie: { maxAge: 60 * 1000 * 60 * 3 },
     })
   );
+ 
   //express messages 
-app.use(require('connect-flash')());
-app.use(function (req, res, next) {
-  res.locals.messages = require('express-messages')(req, res);
-  next();
-});
+  app.use(flash());
+// app.use(function (req, res, next) {
+//   res.locals.messages = require('express-messages')(req, res);
+//   next();
+// });
 
 //passport config
 require('./config/passport')(passport);
@@ -75,16 +74,16 @@ const categoryRouter = require("./routes/category");
 const productRouter = require("./routes/product");
 const cartRouter = require("./routes/cart");
 const checkRouter = require("./routes/checkout");
-const orderRouter = require("./routes/order");
-// const exampleRouter = require("./routes/cart");
-// app.use("/example", exampleRouter);
+const exampleRouter = require("./routes/pay");
+app.use('/pay',exampleRouter);
+//  app.use('/cancel',exampleRouter);
+//  app.use('/success',exampleRouter);
 app.use("/", indexRouter);
 app.use("/home", homeRouter);
 app.use("/about", aboutRouter);
 app.use("/category",categoryRouter);
 app.use("/product",productRouter);
 app.use("/cart",cartRouter);
-app.use("/order", orderRouter);
 app.use("/checkout", checkRouter);
 
 

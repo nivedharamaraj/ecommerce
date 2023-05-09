@@ -1,7 +1,207 @@
-<h1>
-   <% cart.items.forEach(function(p) { %>
-   <%= p.title %>
-   <%= cart.totalQty %>
-   <% }) %>
-</h1>
-<h1>wlcome</h1>
+<%- include ('header');%>
+
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="cart">
+	                <div class="container">
+						<form id = "iddd" action ="/cart/qty" method="post">
+	                	<div class="row">
+							
+	                		<div class="col-lg-9">
+	                			<table class="table table-cart table-mobile">
+									<thead>
+										<tr>
+											<th>Product</th>
+											<th>Price</th>
+											<th>Quantity</th>
+											<th>Total</th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+										
+										<% cart.items.forEach(function(p) { %> 
+
+										<tr>
+											<td class="product-col">
+												<div class="product">
+													<figure class="product-media">
+														<a href="#">
+															<img src="<%=p.image %>" alt="Product image">
+														</a>
+													</figure>
+
+													<h3 class="product-title">
+														<a href="#"><%=p.title %></a>
+													</h3><!-- End .product-title -->
+												</div><!-- End .product -->
+											</td>
+											<td class="price-col"><%=p.price %></td>
+											<td >
+									
+													
+													<input type="hidden" id="idd_<%=p.productId%>" name="idd" value="<%=p.price %>">
+													<input type="hidden" id="productId" name="productId" value=" <%=p.productId%>">
+												
+													 <div class="counter">
+														
+														<span class="down" onClick='decreaseCount(event, this,<%= p.productId %>)'>-</span>
+														<input type="text" id ="quantity_new_<%=p.productId%>" name="quantity_new" value="<%= p.qty %>" max="5">
+														<span class="up" onClick='increaseCount(event, this,<%= p.productId %> )'>+</span>
+														<label class="total">TotalPrice:<span id="calcamount<%=p.productId%>" name="totalPrice"></span></label>
+														 <input type="hidden" class="total" id="calcamount_<%=p.productId%>" name="totalPrice" value="<%= p.total %>" > 
+													   </div>  
+										
+												<!-- End .cart-product-quantity -->
+                                            </td>
+											<td id="totalprice_<%=p.productId%>" class="total-col"><%= p.total %></td>    
+										                                                          
+											<td class="remove-col"><input type ="submit" class="btn-product btn-cart" value="Remove"></button></td>
+											
+										</tr>
+										                                 
+										<% }) %>	
+									</tbody>
+							
+                                        
+									
+								</table><!-- End .table table-wishlist -->
+								
+	                			<div class="cart-bottom">
+			            			
+									<input type ="submit" class="btn btn-outline-dark-2" value = "UPDATE CART">
+								 
+		            			</div><!-- End .cart-bottom -->
+							</form>
+						
+						</div><!-- End .col-lg-9 -->
+						
+	                		<aside class="col-lg-3">
+	                			<div class="summary summary-cart">
+	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+									
+	                				<table class="table table-summary">
+	                					<tbody>
+											 
+	                						<tr class="summary-subtotal">
+	                							<td>Subtotal:</td>
+	                							<td><%= cart.totalCost %></td>
+	                						</tr><!-- End .summary-subtotal -->
+	                						<tr class="summary-shipping">
+	                							<td>Shipping:</td>
+	                							<td>&nbsp;</td>
+	                						</tr>
+
+	                						<tr class="summary-shipping-row">
+	                							<td>
+													<div class="custom-control custom-radio">
+														<input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+														<label class="custom-control-label" for="free-shipping">Free Shipping</label>
+													</div><!-- End .custom-control -->
+	                							</td>
+	                							<td>$0.00</td>
+	                						</tr><!-- End .summary-shipping-row -->
+
+	                						<tr class="summary-shipping-row">
+	                							<td>
+	                								<div class="custom-control custom-radio">
+														<input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
+														<label class="custom-control-label" for="standart-shipping">Standart:</label>
+													</div><!-- End .custom-control -->
+	                							</td>
+	                							<td>$10.00</td>
+	                						</tr><!-- End .summary-shipping-row -->
+
+	                						<tr class="summary-shipping-row">
+	                							<td>
+	                								<div class="custom-control custom-radio">
+														<input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
+														<label class="custom-control-label" for="express-shipping">Express:</label>
+													</div><!-- End .custom-control -->
+	                							</td>
+	                							<td>$20.00</td>
+	                						</tr><!-- End .summary-shipping-row -->
+
+	                						<tr class="summary-shipping-estimate">
+	                							<td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
+	                							<td>&nbsp;</td>
+	                						</tr><!-- End .summary-shipping-estimate -->
+
+	                						<tr class="summary-total">
+	                							<td>Total:</td>
+	                							<td><%= cart.totalCost %></td>
+	                						</tr><!-- End .summary-total -->
+											
+	                					</tbody>
+                                        
+	                				</table><!-- End .table table-summary -->
+
+	                				<a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+	                			</div><!-- End .summary -->
+
+		            			<a href="/category" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+	                		</aside><!-- End .col-lg-3 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .cart -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+		<script type="text/javascript">
+			function increaseCount(a, b,c) {
+				alert(c);
+				var quantity_new = document.getElementById("quantity_new_"+c).value;
+			  alert(quantity_new);
+			  var input = b.previousElementSibling;
+			  var value = parseInt(input.value) + 1;
+			  value = isNaN(value) ? 1 : value;
+			  // value ++;
+			  input.value = value;
+			   var price = document.getElementById("idd_"+c).value;
+			   alert(price);
+
+			  var calcamount = document.getElementById("calcamount"+c);
+			  calcamount = (parseFloat(price) * parseInt(value));
+			  alert(calcamount);
+			  document.getElementById('totalprice_'+c).innerHTML =calcamount;
+			  document.getElementById('calcamount_'+c).value =calcamount;
+
+			}
+			function decreaseCount(a, b,c) {
+				alert("c");
+				var quantity_new = document.getElementById("quantity_new_"+c).value;
+			  alert(quantity_new);
+			  var input = b.nextElementSibling;
+			  var value = parseInt(input.value) - 1;
+			  if (value > 0) {
+				value = isNaN(value) ? 1 : value;
+				// value --;
+				input.value = value;
+				var price = document.getElementById("idd_"+c).value;
+			   alert(price);
+			  var calcamount = document.getElementById("calcamount"+c);
+			  calcamount = (parseFloat(price) * parseInt(value));
+			  alert(calcamount);
+			  document.getElementById('totalprice_'+c).innerHTML =calcamount;
+			  document.getElementById('calcamount_'+c).value =calcamount;
+			  }
+			}
+			var id = document.getElementById('productId').value;	
+
+		  </script>
+<%- include ('footer'); -%>

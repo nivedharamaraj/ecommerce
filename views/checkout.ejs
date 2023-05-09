@@ -653,7 +653,7 @@
 		                				<h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
 
 		                				<table class="table table-summary">
-                                          
+                                            <form action="/checkout/s" method="post">
 		                					<thead>
 		                						<tr>
 		                							<th >Product</th>
@@ -664,8 +664,9 @@
 		                					<tbody>
                                                 <% cart.items.forEach(function(p) { %> 
 		                						<tr>
-                                                   
+                                                    <input type="hidden" class="form-control" name="title" value="<%= p.title %>">
 		                							<td  ><a href="#"><%= p.title %></a></td>
+                                                    <input type="hidden" class="form-control" name="Subtotal" value="<%= p.total %>">
                                                     <td ><%= p.total %></a></td>
                                                    
 		                						</tr>
@@ -679,11 +680,12 @@
 		                							<td>Free shipping</td>
 		                						</tr>
 		                						<tr class="summary-total">
+                                                    <input type="hidden" class="form-control" name="total" value="<%= cart.totalCost %>">
 		                							<td>Total:</td>
 		                							<td><%= cart.totalCost %></td>
 		                						</tr><!-- End .summary-total -->
 		                					</tbody>
-                                          
+                                            </form>
 		                				</table><!-- End .table table-summary -->
 
 		                				<div class="accordion-summary" id="accordion-payment">

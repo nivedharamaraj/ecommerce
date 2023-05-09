@@ -8,16 +8,16 @@ const CheckoutSchema = new mongoose.Schema(
             },
         
         total:{
-            type: Number,  
+            type:Number,  
         },
      },
  ],
         totalCost: {
-                type: Number,
+                type:Number,
               
               },
          userId: {
-              type: String,
+              type:String,
             
             },
     firstName:{
@@ -56,11 +56,11 @@ Phone:{
    
 },
 Emailaddress:{
-        type: String,
+        type:String,
         
     },
 Ordernotes:{
-        type: String, 
+        type:String, 
     }   
    
  },

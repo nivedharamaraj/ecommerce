@@ -93,67 +93,53 @@ router.post('/add_to_cart',async function(req,res){
     }
 });
   
-router.post('/qty',async(req,res,err)=>{
-  if(err)
-console.log("err",err)
+ router.post("/itemqty/:id",async (req,res)=>{
   var qty = req.body.quantity_new;
-  var productId =req.body.productId;
-  var price = req.body.idd;
-  
+   console.log('qty',qty);
+  const id=req.params.id;
+   console.log('id',id);
+  //  var prices= req.body.price;
+  //  console.log('prices',prices);
   var user=req.session.user;
-  var total = req.body.totalPrice;
-  console.log("productId",productId);
-  console.log("price",price);
-  console.log("qty",qty);
-  console.log("total",total);
-// const perChunk = 1   
-// const inputArray =productId
-// const result = inputArray.reduce((resultArray, item, index) => { 
-//   const chunkIndex = Math.floor(index/perChunk)
-//   if(!resultArray[chunkIndex]) {
-//     resultArray[chunkIndex] = [] 
-//   }
-//   resultArray[chunkIndex].push(item)
-//   return resultArray
-// }, [])
-// console.log("result",result);
-var result1 = productId.toString();
-  console.log('result1',result1);
-  console.log("result1length",result1.length)
-  
-   var cartuser = await Cart.findOne({ userId: user })
-for(var i=0;i<result1.length;i++){
-
-     var pid = result1[i]
-     console.log("pid",pid)
-    }  
-      var cartuser = await Cart.findOne({ userId: user })
-        console.log('title',cartuser.items);
-    
-     var itemIndex = cartuser.items.find(p=>p.productId === pid);
-     console.log("gggggg",itemIndex);
-      cartuser.items.productId = pid,
-// const productId=req.params.id;
-// console.log("productId",productId)
-// var user=req.session.user;
-// var cartuser = await Cart.findOne({ userId: user })
-//         console.log('title',cartuser.items);
-    
-//      var itemIndex = cartuser.items.findIndex(p=>p.productId ===productId);
-//      console.log("gggggg",itemIndex);
-
-
-
-res.redirect('/cart');
+  var cartuser = await Cart.findOne({ userId: user });
+  //  console.log('cartuser',cartuser);
+  const item = cartuser.items.findIndex(p => p.productId == id);
+  console.log('item',item);
+  if (item > -1) {
+    cartuser.items[item].qty=qty;
+    cartuser.items[item].price ; 
+    cartuser.items[item].total = cartuser.items[item].qty * cartuser.items[item].price  ; 
+    console.log('id1', cartuser.items[item].total);
+    cartuser.totalQty++;
+    cartuser.totalCost = cartuser.items.map(item => item.total).reduce((acc, next) => acc + next);
+  }
+  const carts = await cartuser.save();
+  res.redirect('/cart');
  });
-//  router.post("/removeitems/:id", async (req,res)=>{
-//   var user=req.session.user;
-//   var productId = req.params.id;
-//  // console.log(productId);
-//   const cartuser = await Cart.findOne({  userId: user});
-//  var itemIndex = cartuser.items.find(({productId})=>productId === productId);
-//   console.log("yyyyyyyyyyy",itemIndex);
-//   await Cart.deleteOne(itemIndex);
-//   res.redirect('/cart');
-//  })
+ router.post("/remove/:id",async (req,res)=>{
+  const id=req.params.id;
+  console.log('idremove',id);
+  var user=req.session.user;
+  var cartdetaile = await Cart.findOne({ userId: user });
+  const cartindex = cartdetaile.items.findIndex(p => p.productId == id);
+  console.log('cartindex',cartindex); 
+if (cartdetaile.items[cartindex]>-1) {
+   var cartt=await  cartdetaile.items.findByIdAndDelete((productId==id));
+}
+console.log('cartt',cartt);
+const carts = await cartdetaile.save();
+  res.redirect('/cart');   
+});
+// router.get('/remove/:id',async(req,res)=>{
+//   const id=req.params.id;
+//     console.log('idremove',id);
+//     var user=req.session.user;
+//     var cartdetaile = await Cart.findOne({ userId: user });
+//     // const cartindex = cartdetaile.items.findIndex(p => p.productId == id);
+//     // console.log('cartindex',cartindex);
+   
+//       const cartx = cartdetaile.items.findOneAndDelete(({productId:id}));
+//       console.log('cartx ',cartx);
+//         res.render("cart", {cart: cartdetaile});
+// });
 module.exports = router;
